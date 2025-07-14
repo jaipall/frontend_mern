@@ -7,8 +7,32 @@ import { LoginPage } from "./pages/LoginPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { CartPage } from "./pages/CartPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { useMyContext } from "./context/MyContext";
 
 const App = () => {
+  const { user, appLoading } = useMyContext();
+
+  if (appLoading) {
+    return (
+      <div className="min-h-[100vh] flex items-center content-center">
+        <div className="text-purple-600 text-3xl">Loding...</div>
+      </div>
+    );
+  }
+
+  const { isAuthenticated } = user;
+
+  if (!isAuthenticated) {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<LoginPage />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
   return (
     <BrowserRouter>
       <Routes>

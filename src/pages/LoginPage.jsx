@@ -1,8 +1,7 @@
 import { Navbar } from "../components/Navbar";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -15,14 +14,15 @@ const LoginPage = () => {
     const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
       method: "POST",
       body: JSON.stringify(dataObj),
+      credentials: "include",
       headers: {
         "content-type": "application/json",
       },
     });
     const result = await resp.json();
-    if (resp.status == 201) {
+    if (resp.status == 200) {
       alert("Login Successful");
-      navigate("/Home");
+      window.open("/", "_self");
     } else {
       alert("Login Error", result.message);
     }
